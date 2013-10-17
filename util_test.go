@@ -31,25 +31,29 @@ var _ = Describe("Util", func() {
 	})
 
 	Describe("deltaSinceLastCall", func() {
-		var emitter func() float64
-		emitter = Fib()
+		var (
+			emitter func() float64
+			subject func() float64
+		)
 
 		Context("with a function that changes", func() {
 			It("reflects the changes in successive calls", func() {
-				delta := DeltaSinceLastCall(emitter)
-				Expect(delta()).To(Equal(0.0))
-				Expect(delta()).To(Equal(1.0))
-				Expect(delta()).To(Equal(1.0))
-				Expect(delta()).To(Equal(2.0))
+				emitter = Fib()
+				subject = DeltaSinceLastCall(emitter)
+				Expect(subject()).To(Equal(0.0))
+				Expect(subject()).To(Equal(1.0))
+				Expect(subject()).To(Equal(1.0))
+				Expect(subject()).To(Equal(2.0))
 			})
 		})
 
 		Context("with a function that does not change", func() {
 			It("always shows zero delta", func() {
-				delta := DeltaSinceLastCall(func() float64 { return 1.0 })
-				Expect(delta()).To(Equal(0.0))
-				Expect(delta()).To(Equal(0.0))
-				Expect(delta()).To(Equal(0.0))
+				emitter = func() float64 { return 1.0 }
+				subject = DeltaSinceLastCall(emitter)
+				Expect(subject()).To(Equal(0.0))
+				Expect(subject()).To(Equal(0.0))
+				Expect(subject()).To(Equal(0.0))
 			})
 		})
 
