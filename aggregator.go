@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// If this is false, periods in which a given metric is alwys zero will not
+// If this is false, periods in which a given metric is always zero will not
 // result in an API transmission.  This will save money and bandwidth, but any
 // alarms that depend on a quiescent system (such as a a scale-down event when
 // a metric is low) might not fire, since the alarm will go into
