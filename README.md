@@ -61,6 +61,11 @@ processedSinceLastCall = DeltaSinceLastCall(myapp.TotalJobsProcessed)
 gomon.Register("JobsProcessedPerMinute", 1, "Count", ProcessedSinceLastCall)
 ```
 
+There's an equivalent shorthand for the above common pattern:
+```go
+gomon.RegisterDelta("JobsProcessedPerMinute", 1, "Count", myapp.TotalJobsProcessed)
+```
+
 #### Enable Dimensions
 Cloudwatch datapoints frequently have
 [Dimensions](http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/cloudwatch_concepts.html#Dimension)
