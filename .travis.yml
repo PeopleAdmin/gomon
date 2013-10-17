@@ -1,0 +1,12 @@
+---
+language: go
+go: 1.1
+env:
+  global:
+  - AWS_ACCESS_KEY_ID=FAKE
+  - AWS_SECRET_ACCESS_KEY=FAKE
+before_install:
+- go get github.com/onsi/ginkgo
+- go get github.com/onsi/gomega
+script:
+  - ginkgo -v
