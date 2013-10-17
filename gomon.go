@@ -22,11 +22,11 @@ var Region = aws.USEast
 // Start begins collecting and batching metrics from all aggregators.
 func Start() {
 	connect()
-	startBatcher(commonBatchStream)
+	go startBatcher(commonBatchStream)
 
 	for i := range registry {
 		debug("starting", registry[i])
-		registry[i].StartLoop()
+		go registry[i].StartLoop()
 	}
 }
 
