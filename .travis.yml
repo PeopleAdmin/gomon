@@ -11,3 +11,12 @@ before_install:
 - go install github.com/onsi/ginkgo/ginkgo
 script:
   - $HOME/gopath/bin/ginkgo -v
+notifications:
+  email: false
+  campfire:
+    rooms:
+    - secure: ! 'dXBEcUcFOjXGH7XMeky6vrVUI2nJQgjZRxAJTXyRuGs4xOi5nE9OYcM05Igc5
+
+      sTuU9wd/QIt4xnrDvA9bW8LToW2kG5QRcXRRV9R7HJBbsNsEKUm3oU0R4w48JEXdMoouRbaSt
+
+      fwM5eUE6hgr+tV6gy7gB2ELpa72Ju1VV6mPBU='
