@@ -1,6 +1,6 @@
 package gomon
 
-import(
+import (
 	"time"
 )
 
@@ -20,22 +20,21 @@ func Register(name string, interval time.Duration, unit string, floatEmitter fun
 	registry = append(registry, newAggregator)
 }
 
-// RegisterInt is a convenience function that wraps metric emitters which
-// produce int32s.
-func RegisterInt(name string, interval time.Duration, unit string, intEmitter func() int32) {
+// RegisterInt is a convenience function that wraps int emitters with a float cast.
+func RegisterInt(name string, interval time.Duration, unit string, intEmitter func() int) {
 	wrapped := func() float64 { return float64(intEmitter()) }
 	Register(name, interval, unit, wrapped)
 }
 
-// RegisterDelta wraps an emmitter with DeltaSinceLastCall to turn it into a
+// RegisterDelta wraps an emitter with DeltaSinceLastCall to turn it into a
 // rate measurement instead of a point in time metric.
 func RegisterDelta(name string, interval time.Duration, unit string, floatEmitter func() float64) {
 	wrapped := DeltaSinceLastCall(floatEmitter)
 	Register(name, interval, unit, wrapped)
 }
 
-// RegisterDeltaInt is RegisterDelta for int32s.
-func RegisterDeltaInt(name string, interval time.Duration, unit string, intEmitter func() int32) {
+// RegisterDeltaInt is RegisterDelta for ints.
+func RegisterDeltaInt(name string, interval time.Duration, unit string, intEmitter func() int) {
 	wrapped := func() float64 { return float64(intEmitter()) }
 	RegisterDelta(name, interval, unit, wrapped)
 }
