@@ -5,6 +5,8 @@ package gomon
 import (
 	"github.com/crowdmob/goamz/aws"
 	"github.com/crowdmob/goamz/cloudwatch"
+	"log"
+	"os"
 )
 
 const metricTransmitInterval = 60
@@ -23,6 +25,7 @@ func Start() {
 	startBatcher(commonBatchStream)
 
 	for i := range registry {
+		debug("starting", registry[i])
 		registry[i].StartLoop()
 	}
 }
@@ -41,5 +44,12 @@ func connect() {
 	cw, err = cloudwatch.NewCloudWatch(auth, Region.CloudWatchServicepoint, Namespace)
 	if err != nil {
 		panic("Couldn't connect to amazon:" + err.Error())
+	}
+}
+
+func debug(args ...interface{}) {
+	if os.Getenv("DEBUG") != "" {
+		args = append([]interface{}{"MONITORING"}, args...)
+		log.Println(args...)
 	}
 }

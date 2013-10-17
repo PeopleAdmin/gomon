@@ -30,12 +30,16 @@ func startBatcher(incomingBatches <-chan cloudwatch.MetricDatum) {
 }
 
 func sendToAws(metrics []cloudwatch.MetricDatum) {
+	debug("transmitting", len(metrics), "metrics to CW:", metrics)
 	_, err := putData(cw, metrics)
 	if err != nil {
 		log.Println("ERROR sending metrics to AWS:" + err.Error())
 	}
 }
 
+// Following two functions are adapted from
+// github.com/crowdmob/goamz/cloudwatch, since the putData implementation of
+// that package was broken.
 func putData(c *cloudwatch.CloudWatch, metrics []cloudwatch.MetricDatum) (result *aws.BaseResponse, err error) {
 	// Serialize the params
 	params := aws.MakeParams("PutMetricData")
@@ -49,9 +53,9 @@ func putData(c *cloudwatch.CloudWatch, metrics []cloudwatch.MetricDatum) (result
 		if metric.Unit != "" {
 			params[prefix+".Unit"] = metric.Unit
 		}
-    if metric.Value != 0 {
-      params[prefix+".Value"] = strconv.FormatFloat(metric.Value, 'f', -1, 64)
-    }
+		if metric.Value != 0 {
+			params[prefix+".Value"] = strconv.FormatFloat(metric.Value, 'f', -1, 64)
+		}
 		if !metric.Timestamp.IsZero() {
 			params[prefix+".Timestamp"] = metric.Timestamp.UTC().Format(time.RFC3339)
 		}

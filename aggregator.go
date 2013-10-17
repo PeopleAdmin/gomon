@@ -45,6 +45,7 @@ func (m *Aggregator) StartLoop() {
 		stats, allZero := newStatMetricDatum(m.metricName, buffer, m.unitName)
 
 		if ShouldTransmitZero || !allZero {
+			debug("batching metric:", m.metricName, stats)
 			m.batchStream <- stats
 		}
 	}

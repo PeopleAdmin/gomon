@@ -1,6 +1,7 @@
 package gomon
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -37,4 +38,8 @@ func RegisterDelta(name string, interval time.Duration, unit string, floatEmitte
 func RegisterDeltaInt(name string, interval time.Duration, unit string, intEmitter func() int) {
 	wrapped := func() float64 { return float64(intEmitter()) }
 	RegisterDelta(name, interval, unit, wrapped)
+}
+
+func (a *Aggregator) String() string {
+	return fmt.Sprintf("%s, emitting %d times per minute.", a.metricName, a.produceInterval)
 }
