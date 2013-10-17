@@ -11,7 +11,8 @@ var _ = Describe("Util", func() {
 		var slice []float64
 
 		Context("called with a slice of all zeros", func() {
-			slice = []float64{0.0}
+			BeforeEach(func() { slice = []float64{0.0} })
+
 			It("should return the appropriate stats", func() {
 				allZero, min, max, sum := calculateStats(slice)
 				Expect(allZero).To(BeTrue())
@@ -19,13 +20,29 @@ var _ = Describe("Util", func() {
 				Expect(max).To(BeZero())
 				Expect(sum).To(BeZero())
 			})
+
 		})
 
 		Context("with an empty slice", func() {
+			BeforeEach(func() { slice = []float64{} })
+
 			It("should panic", func() {
-				slice = []float64{}
 				Expect(func() { calculateStats(slice) }).To(Panic())
 			})
+
+		})
+
+		Context("with some sample data points", func() {
+			BeforeEach(func() { slice = []float64{1.0, 2.0, 3.0} })
+
+			It("should return the appropriate stats", func() {
+				allZero, min, max, sum := calculateStats(slice)
+				Expect(allZero).To(BeFalse())
+				Expect(min).To(Equal(1.0))
+				Expect(max).To(Equal(3.0))
+				Expect(sum).To(Equal(6.0))
+			})
+
 		})
 
 	})
